@@ -1,4 +1,4 @@
 git add .
-git commit -m "Agregado ejercio del tema 8 de arrays
+git commit -m "Realizado modificaciones en el bat"
 git push -u origin master
 pause
