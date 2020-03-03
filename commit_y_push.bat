@@ -1,4 +1,4 @@
 git add .
-git commit -m "Agregado ejercio del tema 5 de objetos"
+git commit -m "Agregado ejercio del tema 8 de arrays
 git push -u origin master
 pause
