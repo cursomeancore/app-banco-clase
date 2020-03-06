@@ -15,7 +15,6 @@ const mostrarGestores = (gestores) => {
   for (const gestor of gestores) {
     console.log(`Id: ${gestor.id}`);
     console.log(`Usuario: ${gestor.usuario}`);
-    console.log(`Password: ${gestor.password}`);
     console.log(`Correo: ${gestor.correo}`);
     console.log('-----');
   }
@@ -74,53 +73,36 @@ ok((err, datos) => {
 const usuario = 'gestor1';
 const password = 'gestor1';
 loginGestor(usuario, password, (err) => {
-  if(err) {
-    // no estoy autenticado
-    return console.log(err);
-  }
+  if(err) return console.log(err);
 
   // estoy autenticado
   console.log('Estoy autenticado');
-});
+  
+  // invocación a la función obtenerGestores
+  obtenerGestores((err, gestores) => {
+    if(err) return console.log(err);
 
-
-
-
-
-
-
-
-
-
-
-
-  /*
-  const opcionesObtenerGestores = {
-    url: 'http://localhost:8085/gestores/',
-    metodoHTTP: 'GET',
-    cabeceras: {
-      Authorization: `Basic ${token}`
-    },
-    json: true
-  }
-
-  http(opcionesObtenerGestores, (err, response) => {
-    if (err) return console.log(err);
-    if (!response.ok) return console.log(response.msg);
-
-    const gestores = response.data;
-
-    console.log('GESTORES');
-
-    for (const gestor of gestores) {
-      console.log(`Id: ${gestor.id}`);
-      console.log(`Usuario: ${gestor.usuario}`);
-      console.log(`Correo: ${gestor.correo}`);
-      console.log('-----');
-    }
+    // tengo el array de gestores y los muestro
+    mostrarGestores(gestores);
   });
 });
 
+
+console.log('Sigo ejecutando código');
+
+
+
+
+
+
+
+
+
+ 
+ 
+
+  
+ /*
 
 loginGestor('gestor1', 'gestor2', err => {
 

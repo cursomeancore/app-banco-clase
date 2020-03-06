@@ -39,3 +39,27 @@ const loginGestor = (usuario, password, callback) => {
     //const token = response.data.token;
   });
 };
+
+// declaración de la función obtenerGestores
+const obtenerGestores = (callback) => {
+
+  const token = localStorage.getItem('token');
+
+  const opcionesObtenerGestores = {
+    url: 'http://localhost:8085/gestores/',
+    metodoHTTP: 'GET',
+    cabeceras: {
+      Authorization: `Basic ${token}`
+    },
+    json: true
+  }
+
+  http(opcionesObtenerGestores, (err, response) => {
+    if (err) return callback(err);
+    if(!response.ok) return callback(response.msg);
+
+    // la respuesta que me ha llegado es correcta
+    const gestores = response.data;
+    callback(null, gestores);
+  });
+};
