@@ -61,36 +61,104 @@ console.log(objetoJavaSript);
 
 */
 
-const banco = new Banco();
+function initCallback() {
 
-// invocación a la función ok
-banco.ok((err, datos) => {
-  if(err) {
-    return console.log(err);
-  }
-  
-  console.log(datos);
-});
+  const banco = new Banco();
 
-// invocación a la función loginGestor
-const usuario = 'gestor1';
-const password = 'gestor1';
-banco.loginGestor(usuario, password, (err) => {
-  if(err) return console.log(err);
+  // invocación a la función ok
+  banco.ok((err, datos) => {
+    if(err) {
+      return console.log(err);
+    }
+    
+    console.log(datos);
+  });
 
-  // estoy autenticado
-  console.log('Estoy autenticado');
-  
-  // invocación a la función obtenerGestores
-  banco.obtenerGestores((err, gestores) => {
+
+  // invocación a la función loginGestor
+  const usuario = 'gestor1';
+  const password = 'gestor1';
+  banco.loginGestor(usuario, password, (err) => {
     if(err) return console.log(err);
 
-    // tengo el array de gestores y los muestro
-    mostrarGestores(gestores);
+    // estoy autenticado
+    console.log('Estoy autenticado');
+    
+    // invocación a la función obtenerGestores
+    banco.obtenerGestores((err, gestores) => {
+      if(err) return console.log(err);
+
+      // tengo el array de gestores y los muestro
+      mostrarGestores(gestores);
+    });
   });
-});
+}
+
+function initPromise() {
+
+  const bancoPromise = new BancoPromise();
+
+  const promise = bancoPromise.ok();
+
+  // las promesas poseen el método then y catch
+  promise.then((response) => {
+
+    console.log('Se ha ejecutado el callback del then');
+    console.log(response);
+    
+  }).catch((err) => {
+    console.log('Se ha ejecutado el callback del catch');
+    console.log(err);
+  });
+
+
+
+  // invocación a loginGestor
+  bancoPromise.loginGestor('gestor1', 'gestor1')
+  .then(() => {
+
+    console.log('Estoy autenticado');
+
+    // una vez que estoy autenticado, obtengo los gestores
+    return bancoPromise.obtenerGestores();
+
+  }).then((gestores) => {
+    mostrarGestores(gestores);
+    return bancoPromise.obtenerGestores();
+  }).then((gestores) => {
+    mostrarGestores(gestores);
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
+(async () => {
+
+  try {
+    const bancoPromise = new BancoPromise();
+
+    const response = await bancoPromise.ok();
+    console.log(response);
+    
+    // espero hasta que la promesa resuelve o se rechace
+    await bancoPromise.loginGestor('gestor1', 'gestor1');
+    console.log('Estoy autenticado');    
+
+    // ya estoy autenticado
+    const gestores = await bancoPromise.obtenerGestores();
+    mostrarGestores(gestores);
+  }
+
+  // si alguna promesa dentro del try es rechazada, capturo el error aquí
+  catch (err) {
+    console.log(err);    
+  }
+})();
+
 
 console.log('Sigo ejecutando código');
+
+
 
 
 
