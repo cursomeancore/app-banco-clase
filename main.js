@@ -12,12 +12,13 @@ const mostrarGestores = (gestores) => {
 
   console.log('GESTORES');
 
-  for (const gestor of gestores) {
+  gestores.forEach(gestor => {
     console.log(`Id: ${gestor.id}`);
     console.log(`Usuario: ${gestor.usuario}`);
     console.log(`Correo: ${gestor.correo}`);
     console.log('-----');
-  }
+  });
+
 };
 
 
@@ -25,7 +26,7 @@ const mostrarClientes = (clientes) => {
 
   console.log('CLIENTES');
 
-  for (const cliente of clientes) {
+  clientes.forEach(cliente => {
 
     const usuarioGestor = obtenerGestorUsuario(cliente.id_gestor);
 
@@ -36,7 +37,7 @@ const mostrarClientes = (clientes) => {
     console.log(`Password: ${cliente.password}`);
     console.log(`Correo: ${cliente.correo}`);
     console.log('-----');
-  }
+  });
 }
 
 
@@ -60,8 +61,10 @@ console.log(objetoJavaSript);
 
 */
 
+const banco = new Banco();
+
 // invocación a la función ok
-ok((err, datos) => {
+banco.ok((err, datos) => {
   if(err) {
     return console.log(err);
   }
@@ -72,21 +75,20 @@ ok((err, datos) => {
 // invocación a la función loginGestor
 const usuario = 'gestor1';
 const password = 'gestor1';
-loginGestor(usuario, password, (err) => {
+banco.loginGestor(usuario, password, (err) => {
   if(err) return console.log(err);
 
   // estoy autenticado
   console.log('Estoy autenticado');
   
   // invocación a la función obtenerGestores
-  obtenerGestores((err, gestores) => {
+  banco.obtenerGestores((err, gestores) => {
     if(err) return console.log(err);
 
     // tengo el array de gestores y los muestro
     mostrarGestores(gestores);
   });
 });
-
 
 console.log('Sigo ejecutando código');
 
